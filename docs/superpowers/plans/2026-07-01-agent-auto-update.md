@@ -30,6 +30,7 @@
 
 **Interfaces:**
 - Produces: `Test-ShouldRunToday([string]$StatePath, [switch]$Force) -> [bool]`
+- Produces: `Test-ShouldRunNow([string]$StatePath, [switch]$Force, [string]$NotBeforeTime, [datetime]$Now) -> [bool]`
 - Produces: `Get-AgentUpdatePlan() -> [object[]]`
 - Produces: `New-AgentTaskXml([string]$ScriptPath, [string]$UserId, [string]$Time = '08:00') -> [xml]`
 

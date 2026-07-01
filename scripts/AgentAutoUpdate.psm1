@@ -32,6 +32,34 @@ function Test-ShouldRunToday {
     return $true
 }
 
+function Test-ShouldRunNow {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$StatePath,
+
+        [switch]$Force,
+
+        [ValidatePattern('^\d{2}:\d{2}$')]
+        [string]$NotBeforeTime = '08:00',
+
+        [datetime]$Now = (Get-Date)
+    )
+
+    if ($Force) {
+        return $true
+    }
+
+    if (-not (Test-ShouldRunToday -StatePath $StatePath)) {
+        return $false
+    }
+
+    $hour, $minute = $NotBeforeTime.Split(':')
+    $notBefore = $Now.Date.AddHours([int]$hour).AddMinutes([int]$minute)
+
+    return $Now -ge $notBefore
+}
+
 function New-AgentUpdateAttempt {
     [CmdletBinding()]
     param(
@@ -159,4 +187,4 @@ function New-AgentTaskXml {
 "@
 }
 
-Export-ModuleMember -Function Test-ShouldRunToday, Get-AgentUpdatePlan, New-AgentTaskXml
+Export-ModuleMember -Function Test-ShouldRunToday, Test-ShouldRunNow, Get-AgentUpdatePlan, New-AgentTaskXml

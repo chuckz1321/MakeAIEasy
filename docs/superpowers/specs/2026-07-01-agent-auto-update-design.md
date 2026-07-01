@@ -17,6 +17,8 @@ The updater runs from Windows Task Scheduler.
 - Missed-run behavior: if the machine is off or asleep at 08:00, the task is
   allowed to run as soon as Windows can run missed scheduled tasks.
 - Login fallback: the task also runs at user logon.
+- Time gate: normal runs before 08:00 are skipped, so the login fallback does
+  not update early when the user signs in before the scheduled time.
 - Duplicate control: the update script keeps a per-day state file and skips
   normal runs after the first successful same-day execution. A manual force
   flag bypasses this skip.

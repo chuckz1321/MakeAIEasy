@@ -27,6 +27,27 @@ Describe 'AgentAutoUpdate core behavior' {
         Test-ShouldRunToday -StatePath $temp | Should Be $true
     }
 
+    It 'skips a normal startup fallback before the scheduled time' {
+        $temp = Join-Path $TestDrive 'missing-before-eight.json'
+        $now = [datetime]'2026-07-01T07:30:00'
+
+        Test-ShouldRunNow -StatePath $temp -NotBeforeTime '08:00' -Now $now | Should Be $false
+    }
+
+    It 'runs a startup fallback after the scheduled time' {
+        $temp = Join-Path $TestDrive 'missing-after-eight.json'
+        $now = [datetime]'2026-07-01T08:01:00'
+
+        Test-ShouldRunNow -StatePath $temp -NotBeforeTime '08:00' -Now $now | Should Be $true
+    }
+
+    It 'runs when forced before the scheduled time' {
+        $temp = Join-Path $TestDrive 'missing-force-before-eight.json'
+        $now = [datetime]'2026-07-01T07:30:00'
+
+        Test-ShouldRunNow -StatePath $temp -NotBeforeTime '08:00' -Now $now -Force | Should Be $true
+    }
+
     It 'plans updates for claude, codex, and copilot' {
         $plan = Get-AgentUpdatePlan
 

@@ -1,7 +1,10 @@
 [CmdletBinding()]
 param(
     [switch]$Force,
-    [switch]$WhatIf
+    [switch]$WhatIf,
+
+    [ValidatePattern('^\d{2}:\d{2}$')]
+    [string]$NotBeforeTime = '08:00'
 )
 
 Set-StrictMode -Version Latest
@@ -91,8 +94,8 @@ function Invoke-AgentUpdateAttempt {
 
 Write-AgentLog "Agent auto update started"
 
-if (-not (Test-ShouldRunToday -StatePath $statePath -Force:$Force)) {
-    Write-AgentLog "SKIP: update already completed successfully today. Use -Force to run again."
+if (-not (Test-ShouldRunNow -StatePath $statePath -Force:$Force -NotBeforeTime $NotBeforeTime)) {
+    Write-AgentLog ("SKIP: update is either already complete today or current time is before {0}. Use -Force to run anyway." -f $NotBeforeTime)
     exit 0
 }
 
