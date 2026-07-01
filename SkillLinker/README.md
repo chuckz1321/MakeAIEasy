@@ -19,6 +19,13 @@ One-line remote run:
 iex (irm 'https://raw.githubusercontent.com/chuckz1321/MakeAIEasy/main/SkillLinker/install.ps1')
 ```
 
+With parameters:
+
+```powershell
+$setup = [scriptblock]::Create((irm 'https://raw.githubusercontent.com/chuckz1321/MakeAIEasy/main/SkillLinker/install.ps1'))
+& $setup -ProjectPath C:\aiwork\casework -DryRun
+```
+
 From any project folder:
 
 ```powershell
