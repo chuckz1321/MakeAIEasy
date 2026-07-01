@@ -127,7 +127,7 @@ README includes install, uninstall, manual run, force run, logs, state, and sche
 
 Run: `git status --short` and inspect scope.
 
-- [ ] **Step 3: Commit and publish**
+- [x] **Step 3: Commit and publish**
 
 Run: `gh repo create AgentAutoUpdate --private --source . --remote origin --push`.
 
