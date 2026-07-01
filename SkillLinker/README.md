@@ -13,6 +13,12 @@ the shared source.
 
 ## Interactive Setup
 
+One-line remote run:
+
+```powershell
+iex (irm 'https://raw.githubusercontent.com/chuckz1321/MakeAIEasy/main/SkillLinker/install.ps1')
+```
+
 From any project folder:
 
 ```powershell
