@@ -8,7 +8,9 @@ Windows scheduled updater for globally installed agent CLI tools:
 
 The task runs every day at 08:00. If Windows misses that time because the
 machine was off or asleep, Task Scheduler is configured to start the missed
-task when available. A logon trigger is also registered as a startup fallback.
+task when available. The installer tries to add a startup trigger and always
+adds a logon trigger as a fallback. On non-elevated installs, Windows may deny
+the startup trigger; in that case the installer falls back to daily + logon.
 The updater itself will skip normal logon-triggered runs before 08:00, so an
 early login does not update before the requested time.
 

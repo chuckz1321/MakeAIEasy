@@ -54,11 +54,19 @@ Describe 'AgentAutoUpdate core behavior' {
         ($plan.Name -join ',') | Should Be 'claude,codex,copilot'
     }
 
-    It 'builds task XML with daily, logon, and StartWhenAvailable settings' {
-        [xml]$xml = New-AgentTaskXml -ScriptPath 'C:\Tools\Update-Agents.ps1' -UserId 'DOMAIN\User' -Time '08:00'
+    It 'builds task XML with daily, optional boot, logon, and StartWhenAvailable settings' {
+        [xml]$xml = New-AgentTaskXml -ScriptPath 'C:\Tools\Update-Agents.ps1' -UserId 'DOMAIN\User' -Time '08:00' -IncludeBootTrigger
 
         $xml.Task.Settings.StartWhenAvailable | Should Be 'true'
         $xml.Task.Triggers.CalendarTrigger.StartBoundary | Should Match 'T08:00:00'
+        $xml.Task.Triggers.BootTrigger.Enabled | Should Be 'true'
+        $xml.Task.Triggers.LogonTrigger.UserId | Should Be 'DOMAIN\User'
+    }
+
+    It 'omits the boot trigger when requested for non-admin installation' {
+        [xml]$xml = New-AgentTaskXml -ScriptPath 'C:\Tools\Update-Agents.ps1' -UserId 'DOMAIN\User' -Time '08:00'
+
+        $xml.Task.Triggers.BootTrigger | Should BeNullOrEmpty
         $xml.Task.Triggers.LogonTrigger.UserId | Should Be 'DOMAIN\User'
     }
 }

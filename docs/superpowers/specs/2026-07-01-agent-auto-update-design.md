@@ -16,6 +16,9 @@ The updater runs from Windows Task Scheduler.
 - Primary trigger: every day at 08:00 local time.
 - Missed-run behavior: if the machine is off or asleep at 08:00, the task is
   allowed to run as soon as Windows can run missed scheduled tasks.
+- Startup fallback: the installer tries to add a task trigger for Windows
+  startup. If Windows denies that trigger in a non-elevated user context, the
+  installer falls back to daily + logon.
 - Login fallback: the task also runs at user logon.
 - Time gate: normal runs before 08:00 are skipped, so the login fallback does
   not update early when the user signs in before the scheduled time.

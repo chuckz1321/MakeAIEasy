@@ -24,7 +24,30 @@ if ($existingTask) {
     Unregister-ScheduledTask -TaskName $TaskName -Confirm:$false
 }
 
-$taskXml = New-AgentTaskXml -ScriptPath $updateScriptPath -UserId $userId -Time $Time
-Register-ScheduledTask -TaskName $TaskName -Xml $taskXml.OuterXml | Out-Null
+$registeredWithBootTrigger = $true
+$taskXml = New-AgentTaskXml -ScriptPath $updateScriptPath -UserId $userId -Time $Time -IncludeBootTrigger
 
-Write-Host ("Registered scheduled task '{0}' for {1} with daily trigger at {2} and logon fallback." -f $TaskName, $userId, $Time)
+try {
+    Register-ScheduledTask -TaskName $TaskName -Xml $taskXml.OuterXml | Out-Null
+}
+catch [System.UnauthorizedAccessException] {
+    $registeredWithBootTrigger = $false
+    $taskXml = New-AgentTaskXml -ScriptPath $updateScriptPath -UserId $userId -Time $Time
+    Register-ScheduledTask -TaskName $TaskName -Xml $taskXml.OuterXml | Out-Null
+}
+catch {
+    if ($_.Exception.Message -notmatch 'Access is denied') {
+        throw
+    }
+
+    $registeredWithBootTrigger = $false
+    $taskXml = New-AgentTaskXml -ScriptPath $updateScriptPath -UserId $userId -Time $Time
+    Register-ScheduledTask -TaskName $TaskName -Xml $taskXml.OuterXml | Out-Null
+}
+
+if ($registeredWithBootTrigger) {
+    Write-Host ("Registered scheduled task '{0}' for {1} with daily trigger at {2}, startup fallback, and logon fallback." -f $TaskName, $userId, $Time)
+}
+else {
+    Write-Host ("Registered scheduled task '{0}' for {1} with daily trigger at {2} and logon fallback. Startup trigger requires elevated rights and was skipped." -f $TaskName, $userId, $Time)
+}

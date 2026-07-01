@@ -123,7 +123,9 @@ function New-AgentTaskXml {
         [string]$UserId,
 
         [ValidatePattern('^\d{2}:\d{2}$')]
-        [string]$Time = '08:00'
+        [string]$Time = '08:00',
+
+        [switch]$IncludeBootTrigger
     )
 
     $hour, $minute = $Time.Split(':')
@@ -131,6 +133,16 @@ function New-AgentTaskXml {
     $escapedUserId = [System.Security.SecurityElement]::Escape($UserId)
     $arguments = "-NoProfile -ExecutionPolicy Bypass -File `"$ScriptPath`""
     $escapedArguments = [System.Security.SecurityElement]::Escape($arguments)
+    $bootTriggerXml = if ($IncludeBootTrigger) {
+        @"
+    <BootTrigger>
+      <Enabled>true</Enabled>
+    </BootTrigger>
+"@
+    }
+    else {
+        ''
+    }
 
     [xml]@"
 <?xml version="1.0" encoding="UTF-16"?>
@@ -146,6 +158,7 @@ function New-AgentTaskXml {
         <DaysInterval>1</DaysInterval>
       </ScheduleByDay>
     </CalendarTrigger>
+$bootTriggerXml
     <LogonTrigger>
       <Enabled>true</Enabled>
       <UserId>$escapedUserId</UserId>
