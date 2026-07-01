@@ -7,3 +7,5 @@ maintain on Windows.
 
 - `AgentAutoUpdate/`: Windows scheduled updater for global `claude`, `codex`,
   and `copilot` CLI tools.
+- `SkillLinker/`: Whole-directory linker for project `.claude/skills` and
+  `.codex/skills`.
