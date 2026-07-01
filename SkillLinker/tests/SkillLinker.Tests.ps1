@@ -56,4 +56,19 @@ Describe 'SkillLinker comparison' {
 
         Test-PathInsideRoot -RootPath $project -Path $inside | Should Be $true
     }
+
+    It 'reports already linked repositories without modifying them' {
+        $project = Join-Path $TestDrive 'linked'
+        $target = Join-Path $project '.agent-skills\skills'
+        New-SkillFile -Path (Join-Path $target 'a\SKILL.md') -Content 'same'
+        New-Item -ItemType Directory -Path (Join-Path $project '.claude') -Force | Out-Null
+        New-Item -ItemType Directory -Path (Join-Path $project '.codex') -Force | Out-Null
+        New-Item -ItemType Junction -Path (Join-Path $project '.claude\skills') -Target $target | Out-Null
+        New-Item -ItemType Junction -Path (Join-Path $project '.codex\skills') -Target $target | Out-Null
+
+        $result = Invoke-AgentSkillsLink -ProjectPath $project
+
+        $result.Status | Should Be 'AlreadyLinked'
+        $result.TargetPath | Should Be $target
+    }
 }

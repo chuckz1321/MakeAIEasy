@@ -8,30 +8,42 @@ neutral skill repository:
 ```
 
 The tool works at the whole `skills` directory level. If Claude and Codex
-skills differ, it prints the differences and stops unless you choose a source.
+skills differ, it prints the differences and asks which directory should become
+the shared source.
 
-## Compare
+## Interactive Setup
+
+From any project folder:
+
+```powershell
+pwsh C:\aiwork\MyTool\MakeAIEasy\SkillLinker\Setup-AgentSkills.ps1
+```
+
+Or pass a project path:
+
+```powershell
+pwsh C:\aiwork\MyTool\MakeAIEasy\SkillLinker\Setup-AgentSkills.ps1 -ProjectPath C:\aiwork\casework
+```
+
+Preview only:
+
+```powershell
+pwsh C:\aiwork\MyTool\MakeAIEasy\SkillLinker\Setup-AgentSkills.ps1 -ProjectPath C:\aiwork\casework -DryRun
+```
+
+## Advanced Entrypoints
+
+Compare only:
 
 ```powershell
 pwsh .\SkillLinker\scripts\Compare-AgentSkills.ps1 -ProjectPath C:\aiwork\casework
 ```
 
-## Link
-
-Dry run:
-
-```powershell
-pwsh .\SkillLinker\scripts\Link-AgentSkills.ps1 -ProjectPath C:\aiwork\casework -Source claude -DryRun
-```
-
-Apply:
+Non-interactive link:
 
 ```powershell
 pwsh .\SkillLinker\scripts\Link-AgentSkills.ps1 -ProjectPath C:\aiwork\casework -Source claude
 ```
-
-If the two skill repositories are identical, `-Source` can be omitted. If they
-differ, `-Source claude` or `-Source codex` is required.
 
 ## Safety
 

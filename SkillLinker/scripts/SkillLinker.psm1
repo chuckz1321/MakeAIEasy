@@ -215,10 +215,11 @@ function Test-AgentSkillsAlreadyLinked {
 
     $claude = Get-Item -LiteralPath $ClaudePath -Force
     $codex = Get-Item -LiteralPath $CodexPath -Force
-    $target = (Resolve-Path -LiteralPath $TargetPath).Path
+    $target = Resolve-AgentPath $TargetPath
 
     return ($claude.LinkType -eq 'Junction' -and $codex.LinkType -eq 'Junction' -and
-        ([string]$claude.Target -ieq $target) -and ([string]$codex.Target -ieq $target))
+        ((Resolve-AgentPath ([string]$claude.Target)) -ieq $target) -and
+        ((Resolve-AgentPath ([string]$codex.Target)) -ieq $target))
 }
 
 function Invoke-AgentSkillsLink {
