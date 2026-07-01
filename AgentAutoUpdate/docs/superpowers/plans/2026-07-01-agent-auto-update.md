@@ -10,8 +10,8 @@
 
 ## Global Constraints
 
-- Repository path is `C:\aiwork\MyTool\AgentAutoUpdate`.
-- GitHub repository name is `AgentAutoUpdate`.
+- Tool path is `C:\aiwork\MyTool\MakeAIEasy\AgentAutoUpdate`.
+- GitHub repository name is `MakeAIEasy`.
 - GitHub publishing account is `chuckz1321`.
 - GitHub repository visibility is private.
 - Daily trigger time is 08:00 local time.
@@ -118,7 +118,7 @@ Expected: no parser errors.
 
 **Interfaces:**
 - Consumes: completed scripts.
-- Produces: private GitHub repo `chuckz1321/AgentAutoUpdate`.
+- Produces: private GitHub repo `chuckz1321/MakeAIEasy`.
 
 - [x] **Step 1: Document install and operations**
 
@@ -130,7 +130,7 @@ Run: `git status --short` and inspect scope.
 
 - [x] **Step 3: Commit and publish**
 
-Run: `gh repo create AgentAutoUpdate --private --source . --remote origin --push`.
+Run: `gh repo create MakeAIEasy --private --source . --remote origin --push`.
 
 Expected: private repository is created under the active GitHub account `chuckz1321`.
 

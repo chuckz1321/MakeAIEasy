@@ -5,9 +5,8 @@
 Create a Windows startup-safe updater for globally installed agent CLI tools:
 `claude`, `codex`, and `copilot`.
 
-The repository lives at `C:\aiwork\MyTool\AgentAutoUpdate` and is published as
-a private GitHub repository named `AgentAutoUpdate` under the GitHub account
-`chuckz1321`.
+The tool lives at `C:\aiwork\MyTool\MakeAIEasy\AgentAutoUpdate` inside the
+private GitHub repository `chuckz1321/MakeAIEasy`.
 
 ## Scheduling
 
